@@ -57,6 +57,10 @@ var idx_last_viewed_page_value = getJSONValue("IDX-lastViewedPage");
 
 function getJSONValue(cookieName) {
     var jsonValue = getCookie(cookieName);
+    if (!jsonValue) {
+        console.warn('Cookie ' + cookieName + ' is empty or not found.');
+        return null;
+    }
     try {
         return JSON.parse(jsonValue);
     } catch (error) {
