@@ -75,6 +75,8 @@ function getUrlParams(url) {
 // Function to parse HTML content and extract listing data
 function getListingData() {
     const listingElements = document.querySelectorAll('.IDX-resultsCell');
+    console.log('Listing Elements:', listingElements); // Debugging: Log listing elements
+
     const listings = [];
 
     listingElements.forEach(element => {
@@ -99,33 +101,36 @@ function getListingData() {
     return listings;
 }
 
-const currentPageUrl = window.location.href;
-const dataToSend = {
-    ...cookies,
-    ...jsonValues,
-    current_page_url: currentPageUrl // Include the full URL of the current page
-};
+// Ensure the script runs after the page has fully loaded
+document.addEventListener('DOMContentLoaded', (event) => {
+    const currentPageUrl = window.location.href;
+    const dataToSend = {
+        ...cookies,
+        ...jsonValues,
+        current_page_url: currentPageUrl // Include the full URL of the current page
+    };
 
-// Check if the current URL contains "/idx/results/"
-if (currentPageUrl.includes("/idx/results/")) {
-    const urlParams = getUrlParams(currentPageUrl);
-    dataToSend.url_params = urlParams;
-    dataToSend.listings = getListingData(); // Add listing data
-}
+    // Check if the current URL contains "/idx/results/"
+    if (currentPageUrl.includes("/idx/results/")) {
+        const urlParams = getUrlParams(currentPageUrl);
+        dataToSend.url_params = urlParams;
+        dataToSend.listings = getListingData(); // Add listing data
+    }
 
-// Debugging: Log the dataToSend object to verify its structure before sending
-console.log('Data to Send:', dataToSend);
+    // Debugging: Log the dataToSend object to verify its structure before sending
+    console.log('Data to Send:', dataToSend);
 
-const webhookUrl = "https://hkdk.events/e38pa6eacovfrw";
+    const webhookUrl = "https://hkdk.events/e38pa6eacovfrw";
 
-fetch(webhookUrl, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(dataToSend),
-})
-.then(response => response.json())
-.then(data => console.log('Webhook response:', data))
-.catch(error => console.error('Error sending webhook:', error));
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+    })
+    .then(response => response.json())
+    .then(data => console.log('Webhook response:', data))
+    .catch(error => console.error('Error sending webhook:', error));
+});
 // ]]>
