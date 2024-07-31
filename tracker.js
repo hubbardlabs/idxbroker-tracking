@@ -87,13 +87,15 @@ function getListingData() {
             mlsptid: element.getAttribute('data-mlsptid'),
             lat: element.getAttribute('data-lat'),
             lng: element.getAttribute('data-lng'),
-            address: element.querySelector('.IDX-resultsAddressLink').textContent.trim(),
-            image: element.querySelector('.IDX-resultsPhotoImg').src,
-            detailsUrl: element.querySelector('.IDX-resultsPhotoLink').href
+            address: element.querySelector('.IDX-resultsAddressLink') ? element.querySelector('.IDX-resultsAddressLink').textContent.trim() : null,
+            image: element.querySelector('.IDX-resultsPhotoImg') ? element.querySelector('.IDX-resultsPhotoImg').src : null,
+            detailsUrl: element.querySelector('.IDX-resultsPhotoLink') ? element.querySelector('.IDX-resultsPhotoLink').href : null
         };
+        console.log('Extracted Listing:', listing); // Debugging: Log each extracted listing
         listings.push(listing);
     });
 
+    console.log('All Listings:', listings); // Debugging: Log all listings at the end
     return listings;
 }
 
