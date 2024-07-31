@@ -57,13 +57,32 @@ function getJSONValue(cookieName) {
     }
 }
 
-// Send all data properties to webhook URL
-const webhookUrl = "https://hkdk.events/e38pa6eacovfrw";
+// Function to parse URL parameters into a JSON object
+function getUrlParams(url) {
+    const params = {};
+    const parser = new URL(url);
+    const queryString = parser.search.slice(1).split('&');
+    queryString.forEach(param => {
+        const [key, value] = param.split('=');
+        params[key] = decodeURIComponent(value);
+    });
+    return params;
+}
+
+const currentPageUrl = window.location.href;
 const dataToSend = {
     ...cookies,
     ...jsonValues,
-    current_page_url: window.location.href // Include the full URL of the current page
+    current_page_url: currentPageUrl // Include the full URL of the current page
 };
+
+// Check if the current URL contains "/idx/results/"
+if (currentPageUrl.includes("/idx/results/")) {
+    const urlParams = getUrlParams(currentPageUrl);
+    dataToSend.url_params = urlParams;
+}
+
+const webhookUrl = "https://hkdk.events/e38pa6eacovfrw";
 
 fetch(webhookUrl, {
     method: 'POST',
