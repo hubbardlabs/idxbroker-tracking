@@ -24,6 +24,9 @@ function getCookie(name) {
     return null;
 }
 
+// Debugging: Log the cookies object to verify it's being populated correctly
+console.log('Cookies:', cookies);
+
 // Hubspot Identity. Any field from Hubspot is supported.
 var _hsq = (window._hsq = window._hsq || []);
 _hsq.push(["identify", {
@@ -81,6 +84,9 @@ if (currentPageUrl.includes("/idx/results/")) {
     const urlParams = getUrlParams(currentPageUrl);
     dataToSend.url_params = urlParams;
 }
+
+// Debugging: Log the dataToSend object to verify its structure before sending
+console.log('Data to Send:', dataToSend);
 
 const webhookUrl = "https://hkdk.events/e38pa6eacovfrw";
 
