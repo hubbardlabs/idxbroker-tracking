@@ -72,6 +72,31 @@ function getUrlParams(url) {
     return params;
 }
 
+// Function to parse HTML content and extract listing data
+function getListingData() {
+    const listingElements = document.querySelectorAll('.IDX-resultsCell');
+    const listings = [];
+
+    listingElements.forEach(element => {
+        const listing = {
+            propcat: element.getAttribute('data-propcat'),
+            idxid: element.getAttribute('data-idxid'),
+            idxstatus: element.getAttribute('data-idxstatus'),
+            price: element.getAttribute('data-price'),
+            listingid: element.getAttribute('data-listingid'),
+            mlsptid: element.getAttribute('data-mlsptid'),
+            lat: element.getAttribute('data-lat'),
+            lng: element.getAttribute('data-lng'),
+            address: element.querySelector('.IDX-resultsAddressLink').textContent.trim(),
+            image: element.querySelector('.IDX-resultsPhotoImg').src,
+            detailsUrl: element.querySelector('.IDX-resultsPhotoLink').href
+        };
+        listings.push(listing);
+    });
+
+    return listings;
+}
+
 const currentPageUrl = window.location.href;
 const dataToSend = {
     ...cookies,
@@ -83,6 +108,7 @@ const dataToSend = {
 if (currentPageUrl.includes("/idx/results/")) {
     const urlParams = getUrlParams(currentPageUrl);
     dataToSend.url_params = urlParams;
+    dataToSend.listings = getListingData(); // Add listing data
 }
 
 // Debugging: Log the dataToSend object to verify its structure before sending
