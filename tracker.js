@@ -9,7 +9,9 @@ const cookieNames = [
 ];
 
 const cookies = cookieNames.reduce((acc, name) => {
-    acc[name] = getCookie(name);
+    const cookieValue = getCookie(name);
+    acc[name] = cookieValue;
+    console.log(`Cookie ${name}:`, cookieValue); // Debugging: Log each cookie
     return acc;
 }, {});
 
@@ -23,9 +25,6 @@ function getCookie(name) {
     }
     return null;
 }
-
-// Debugging: Log the cookies object to verify it's being populated correctly
-console.log('Cookies:', cookies);
 
 // Hubspot Identity. Any field from Hubspot is supported.
 var _hsq = (window._hsq = window._hsq || []);
