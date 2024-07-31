@@ -52,7 +52,8 @@ function getJSONValue(cookieName) {
         return null;
     }
     try {
-        return JSON.parse(jsonValue);
+        const decodedValue = decodeURIComponent(jsonValue);
+        return JSON.parse(decodedValue);
     } catch (error) {
         console.error(`Error parsing JSON for ${cookieName}:`, error);
         return null;
